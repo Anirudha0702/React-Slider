@@ -1,47 +1,58 @@
-import { ArrowBack, ArrowForward } from '@mui/icons-material'
-import { useState } from 'react'
+import {BsFillArrowRightCircleFill} from 'react-icons/bs'
+import {BsFillArrowLeftCircleFill} from 'react-icons/bs'
 import './App.scss'
+import { useState } from 'react'
 function App() {
-  const imgURL=[
-    "https://img.freepik.com/free-photo/female-friends-out-shopping-together_53876-25041.jpg?w=2000",
-
-    "https://img.freepik.com/free-photo/studio-shot-pretty-black-woman-with-white-shopping-bag-standing-yellow-background-trendy-spring-fashionable-look_273443-10.jpg",
-
-    "https://media.istockphoto.com/id/1254508881/photo/woman-holding-sale-shopping-bags-consumerism-shopping-lifestyle-concept.jpg?s=612x612&w=0&k=20&c=wuS3z6nPQkMM3_wIoO67qQXP-hfXkxlBc2sedwh-hxc=",
-
-    "https://www.shutterstock.com/image-photo/cheerful-happy-woman-enjoying-shopping-260nw-1417347668.jpg"
-  ]
-  const [index,SetIndex]=useState(0)
-  const [disabled,setDisabled]=useState(false);
-  const image=(value)=>{
+  const handleEvent=(e)=>{
+    const btn_clk=e.currentTarget.getAttribute('data-name');
     
-    if(index+value<imgURL.length && index+value>=0)
-    {
-      console.log(index+value);
-      SetIndex(index+value);
+    if(btn_clk==='left'){
+      const index=imgURL.indexOf(currentImg);
+      if(index===0){
+        setCurrentImg(imgURL[imgURL.length-1])
+      }
+      else{
+        setCurrentImg(imgURL[index-1])
+      }
     }
+    else{
+      const index=imgURL.indexOf(currentImg);
+      if(index===imgURL.length-1){
+        setCurrentImg(imgURL[0])
+      }
+      else{
+        setCurrentImg(imgURL[index+1])
+      }
+    }
+    
   }
+  const imgURL=[
+    "https://source.unsplash.com/Z8dtTatMVMw",
+
+    "https://source.unsplash.com/9dmycbFE7mQ",
+
+    "https://source.unsplash.com/m7K4KzL5aQ8",
+  ]
+   const [currentImg, setCurrentImg] = useState(imgURL[0])
+  
   return (
-    <div className="App">
-      <div className="Slider" style={{ transform:`translateX(-${index * 100}vw)`}}>
-          {
-            imgURL.map((url,key)=>{
-              return(
-                <div className="slide"key={key}>
-                  <img src={url} alt="" loading="eager"/>
-                </div>
-              )
-            })
-          }
+    <>
+    <div className="h-[100svh]  bg-black">
+      <div className="relative w-full h-full opacity-50">
+      <img src={currentImg} className='absolute h-full w-full'/>
       </div>
-      <div className="btnContainer">
-        <ArrowBack className={index===0?"disabled Arrow":'Arrow'}  onClick={()=>{
-          image(-1)
-        }}/>
-        <ArrowForward className={index===imgURL.length-1?"disabled Arrow":'Arrow'} onClick={()=>{image(1)
-        }}/>
-      </div>
+
     </div>
+
+
+    <div className="
+    absolute bottom-4 inset-x-0
+    w-28 h-12 mx-auto 
+    flex justify-around items-center">
+      <button onClick={(e)=>{handleEvent(e)}} data-name='left'><BsFillArrowLeftCircleFill className='w-8 h-8 text-slate-200'/></button>
+      <button onClick={(e)=>{handleEvent(e)}} data-name='right'><BsFillArrowRightCircleFill className='w-8 h-8 text-slate-200' /></button>
+    </div>
+    </>
   )
 }
 
